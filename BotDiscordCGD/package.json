@@ -1,0 +1,16 @@
+{
+  "name": "choigido",
+  "version": "1.0.0",
+  "description": "ChoiGiDo Mucsic Bot",
+  "main": "play.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "yt-search": "^2.10.1",
+    "ytdl-core": "^4.9.1"
+  }
+}
