@@ -129,4 +129,4 @@ function play(guild, song) {
     serverQueue.textChannel.send(`Đang phát: **${song.title}**`);
 }
 
-client.login('ODgyMTY3MzUxOTY4MTUzNjAx.YS3cXg.k2fPRz4IJY_VaRJHGWrNJkirp6k')
+client.login(config.TOKEN)
