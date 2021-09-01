@@ -1,9 +1,6 @@
 {
     "name": "choigido",
     "version": "1.0.0",
-    "engines": {
-        "node": "16.8.0"
-    },
     "description": "ChoiGiDo Mucsic Bot",
     "main": "play.js",
     "scripts": {
