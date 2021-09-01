@@ -1,17 +1,20 @@
 {
-  "name": "choigido",
-  "version": "1.0.0",
-  "description": "ChoiGiDo Mucsic Bot",
-  "main": "play.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@discordjs/opus": "^0.5.3",
-    "discord.js": "^12.2.0",
-    "yt-search": "^2.10.1",
-    "ytdl-core": "^4.9.1"
-  }
+    "name": "choigido",
+    "version": "1.0.0",
+    "engines": {
+        "node": "16.8.0"
+    },
+    "description": "ChoiGiDo Mucsic Bot",
+    "main": "play.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@discordjs/opus": "^0.5.3",
+        "discord.js": "^12.2.0",
+        "yt-search": "^2.10.1",
+        "ytdl-core": "^4.9.1"
+    }
 }
