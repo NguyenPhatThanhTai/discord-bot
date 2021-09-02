@@ -1,4 +1,6 @@
 const Discord = require("discord.js")
+var express = require("express");
+var app = express();
 const ytdl = require("ytdl-core");
 const { Client, Intents } = require('discord.js')
 const config = require("./config.json")
@@ -8,6 +10,11 @@ const prefix = '-';
 const queue = new Map();
 var index = 0;
 var songInfo = null;
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Our app is running on port ${ PORT }`);
+});
 
 client.once("ready", () => {
     console.log(`Logged in as ${client.user.tag}!`)
