@@ -202,7 +202,7 @@ function playInList(message, serverQueue, indexList) {
         return message.channel.send(
             "Danh sách đang trống hoặc số nhập vào không hợp lệ!"
         );
-    play(message.guild, serverQueue.songs[indexList]);
+    play(message.guild, serverQueue.songs[indexList - 1]);
 }
 
 function play(guild, song) {
