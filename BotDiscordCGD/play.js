@@ -10,6 +10,8 @@ const prefix = '-';
 const queue = new Map();
 var index = 0;
 var songInfo = null;
+var dispatcher;
+var stopMusic = false;
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -33,7 +35,7 @@ client.on('message', async message => {
         const list_send = ds_lenh.map((item, i) => `${i + 1}. ${item}`).join("\r\n")
         message.channel.send('Sử dụng các lệnh dưới đây để điều khiển: \n' + list_send)
     } else if (command === "phát") {
-        if (!args[1]) return message.reply('Hãy để lại ít nhất 1 tên bài hát!');
+        if (!args[1]) return message.reply('Hãy để lại ít nhất 1 url bài hát!');
         execute(message, serverQueue);
         return;
     } else if (command === "tiếp") {
@@ -43,8 +45,13 @@ client.on('message', async message => {
         stop(message, serverQueue);
         return;
     } else if (command === "ds") {
-        list(message, serverQueue)
-        return;
+        if (args[1]) {
+            playInList(message, serverQueue, args[1])
+            return;
+        } else {
+            list(message, serverQueue)
+            return;
+        }
     } else if (command === "lui") {
         previous(message, serverQueue)
         return;
@@ -112,21 +119,29 @@ async function execute(message, serverQueue) {
 }
 
 function skip(message, serverQueue) {
-    index += 1;
-    console.log(index);
     if (!message.member.voice.channel)
         return message.channel.send(
-            "Bạn cần ở trong một chanel âm thanh để có thể bỏ qua nhạc tôi!"
+            "Bạn cần ở trong một chanel âm thanh để có thể tiếp tục phát!"
         );
-    if (!serverQueue)
-        return message.channel.send("Không có bài nào đang phát để bỏ qua!");
-    if (serverQueue.songs[index] == null) {
-        index -= 1;
-        return message.channel.send("Không có bài hát tiếp theo để nhảy tới!");
-    } else {
+    if (stopMusic) {
         play(message.guild, serverQueue.songs[index]);
+        stopMusic = false;
+    } else {
+        index += 1;
+        console.log(index);
+        if (!message.member.voice.channel)
+            return message.channel.send(
+                "Bạn cần ở trong một chanel âm thanh để có thể bỏ qua nhạc tôi!"
+            );
+        if (!serverQueue)
+            return message.channel.send("Không có bài nào đang phát để bỏ qua!");
+        if (serverQueue.songs[index] == null) {
+            index -= 1;
+            return message.channel.send("Không có bài hát tiếp theo để nhảy tới!");
+        } else {
+            play(message.guild, serverQueue.songs[index]);
+        }
     }
-
 }
 
 function previous(message, serverQueue) {
@@ -158,12 +173,13 @@ function stop(message, serverQueue) {
     if (!serverQueue)
         return message.channel.send("Không có bài nào đang phát để dừng");
 
-    //Cần hàm stop nhạc
+    stopMusic = true;
+    dispatcher.pause();
 }
 
 function leave(message, serverQueue) {
     message.channel.send("Bye bye ngài!");
-    return serverQueue.connection.dispatcher.end();
+    return message.member.voice.channel.leave();
 }
 
 function list(message, serverQueue) {
@@ -175,6 +191,20 @@ function list(message, serverQueue) {
     }
 }
 
+function playInList(message, serverQueue, indexList) {
+    console.log(indexList);
+    if (!message.member.voice.channel)
+        return message.channel.send(
+            "Bạn cần ở trong một chanel âm thanh để có thể phát nhạc!"
+        );
+
+    if (serverQueue == null || indexList > serverQueue.songs.size)
+        return message.channel.send(
+            "Danh sách đang trống hoặc số nhập vào không hợp lệ!"
+        );
+    play(message.guild, serverQueue.songs[indexList]);
+}
+
 function play(guild, song) {
     const serverQueue = queue.get(guild.id);
     if (!song) {
@@ -183,8 +213,8 @@ function play(guild, song) {
         return;
     }
 
-    const dispatcher = serverQueue.connection
-        .play(ytdl(song.url))
+    dispatcher = serverQueue.connection
+        .play(ytdl(song.url, { highWaterMark: 1 << 25 }))
         .on("finish", () => {
             serverQueue.songs.shift();
             play(guild, serverQueue.songs[0]);
