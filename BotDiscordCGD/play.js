@@ -198,7 +198,7 @@ function playInList(message, serverQueue, indexList) {
             "Bạn cần ở trong một chanel âm thanh để có thể phát nhạc!"
         );
 
-    if (serverQueue == null || indexNumber > serverQueue.songs.length)
+    if (serverQueue == null || indexNumber >= serverQueue.songs.length)
         return message.channel.send(
             "Danh sách đang trống hoặc số nhập vào không hợp lệ!"
         );
