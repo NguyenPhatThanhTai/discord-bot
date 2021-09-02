@@ -174,8 +174,8 @@ async function execute(message, serverQueue) {
         serverQueue.songs.push(song);
         return message.channel.send({
             embed: {
-                title: '⚠️ Lỗi - Nghe Gì Đó!!! ⚠️',
-                description: `Không thể phát bài hát ${song.title}!`
+                title: '🎵 Thông tin - Nghe Gì Đó!!! 🎵',
+                description: `Đã thêm bài hát ${song.title} vào danh sách đợi!`
             }
         });
     }
