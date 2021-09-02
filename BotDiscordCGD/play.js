@@ -192,17 +192,17 @@ function list(message, serverQueue) {
 }
 
 function playInList(message, serverQueue, indexList) {
-    console.log(indexList);
+    var indexNumber = indexList - 1;
     if (!message.member.voice.channel)
         return message.channel.send(
             "Bạn cần ở trong một chanel âm thanh để có thể phát nhạc!"
         );
 
-    if (serverQueue == null || indexList > serverQueue.songs.size)
+    if (serverQueue == null || indexNumber > serverQueue.songs.length)
         return message.channel.send(
             "Danh sách đang trống hoặc số nhập vào không hợp lệ!"
         );
-    play(message.guild, serverQueue.songs[indexList - 1]);
+    play(message.guild, serverQueue.songs[indexNumber]);
 }
 
 function play(guild, song) {
