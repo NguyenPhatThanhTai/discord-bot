@@ -72,6 +72,7 @@ async function execute(message, serverQueue) {
     try {
         songInfo = await ytdl.getInfo(args[1]);
     } catch (err) {
+        console.log(err);
         return message.channel.send("Không tìm thấy bài hát nào với url đó!");
     }
 
@@ -100,8 +101,9 @@ async function execute(message, serverQueue) {
             queueContruct.connection = connection;
             play(message.guild, queueContruct.songs[0]);
         } catch (err) {
+            console.log(err);
             queue.delete(message.guild.id);
-            return message.channel.send("Không tìm thấy bài hát nào với url đó!");
+            return message.channel.send("Không thể play bài nhạc!");
         }
     } else {
         serverQueue.songs.push(song);
